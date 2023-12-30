@@ -2,7 +2,7 @@
 
 import argparse
 
-from drawio_discover.discovrerer.discoverer import discover_packages
+from drawio_discover.discoverer.discoverer import discover_folders
 
 
 def run():
@@ -15,9 +15,8 @@ def run():
     parser.add_argument("input_folder", help="code base to scan", type=str)
     args = parser.parse_args()
 
-    detected_packages = discover_packages(args.input_folder)
-    for package in detected_packages:
-        print(package)
+    folder = discover_folders(args.input_folder)
+    print(folder)
 
 
 if __name__ == "__main__":
