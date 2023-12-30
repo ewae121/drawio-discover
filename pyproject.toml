@@ -10,8 +10,36 @@ python = "^3.10"
 lint = "^1.2.1"
 pytest = "^7.4.3"
 black = "^23.12.1"
+poetry-plugin-taskipy = "^1.0.0"
+flake8 = "^6.1.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+drawio-discover = "python drawio_discover"
+
+format = "task format_drawio_discover && task format_tests"
+format-drawio_discover = "black drawio_discover/ tests/"
+format-tests = "black drawio_discover/ tests/"
+
+format-check = "task format-check-drawio_discover && task format-check-tests"
+format-check-drawio_discover = "black --check drawio_discover/"
+format-check-tests = "black --check tests/"
+
+lint = "task lint-drawio_discover && task lint-tests"
+lint-drawio_discover = "pylint drawio_discover/"
+lint-tests = "pylint tests/"
+
+lint-flake8 = "task lint-flake8-drawio_discover && task lint-flake8-tests"
+lint-flake8-drawio_discover = "task lint-flake8-drawio_discover_1 && task lint-flake8-drawio_discover_2"
+lint-flake8-drawio_discover_1 = "flake8 drawio_discover/ --count --select=E9,F63,F7,F82 --show-source --statistics"
+lint-flake8-drawio_discover_2 = "flake8 drawio_discover/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics"
+lint-flake8-tests = "task lint-flake8-tests_1 && task lint-flake8-tests_2"
+lint-flake8-tests_1 = "flake8 tests/ --count --select=E9,F63,F7,F82 --show-source --statistics"
+lint-flake8-tests_2 = "flake8 tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics"
+
+test = "pytest tests/"
+
