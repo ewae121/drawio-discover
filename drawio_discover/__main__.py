@@ -2,6 +2,8 @@
 
 import argparse
 
+from drawio_discover.discovrerer.discoverer import discover_packages
+
 
 def run():
     """Main function for the application."""
@@ -12,7 +14,10 @@ def run():
     )
     parser.add_argument("input_folder", help="code base to scan", type=str)
     args = parser.parse_args()
-    print(f"Hello Drawio Discover! scan folder: {args.input_folder}")
+
+    detected_packages = discover_packages(args.input_folder)
+    for package in detected_packages:
+        print(package)
 
 
 if __name__ == "__main__":
