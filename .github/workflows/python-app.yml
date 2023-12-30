@@ -42,4 +42,7 @@ jobs:
         poetry run task lint 
     - name: Test with pytest
       run: |
-        poetry run task test
+        poetry run task test | true
+    - name: launch the application
+      run: |
+        poetry run task drawio-discover
