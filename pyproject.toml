@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "drawio-discover"
+version = "0.1.0"
+description = ""
+authors = ["Laurent Bousquet <laurent.bousquet@continental-corporation.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lint = "^1.2.1"
+pytest = "^7.4.3"
+black = "^23.12.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
