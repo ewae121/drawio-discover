@@ -45,5 +45,5 @@ jobs:
         poetry run task test | true
     - name: launch the application
       run: |
-        poetry run task drawio-discover --help
+        poetry run task discover --help
 

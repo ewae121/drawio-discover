@@ -19,7 +19,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-drawio-discover = "python drawio_discover"
+discover = "python drawio_discover"
 
 format = "task format-drawio_discover && task format-tests"
 format-drawio_discover = "black drawio_discover/ tests/"
