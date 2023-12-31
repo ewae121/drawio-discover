@@ -1,6 +1,7 @@
 """ Drawio file generator module """
 
 from datetime import datetime
+from typing import List
 import uuid
 
 from xml.etree.ElementTree import Element
@@ -12,7 +13,7 @@ def _read_setting_or_default(settings: dict, key: str, default_value: str):
     return default_value
 
 
-def init_drawio_file(settings: dict = None) -> Element:
+def init_drawio_file(diagram_elements : List[Element], settings: dict = None) -> Element:
     """Init a drawio file
 
     Args:
@@ -43,7 +44,7 @@ def init_drawio_file(settings: dict = None) -> Element:
     )
     diagram = Element("diagram", attrib={"name": "Page-1", "id": diagram_id})
 
-    mx_graph_model = _init_graph_model(settings)
+    mx_graph_model = _init_graph_model(diagram_elements, settings)
 
     diagram.append(mx_graph_model)
     file.append(diagram)
@@ -51,7 +52,7 @@ def init_drawio_file(settings: dict = None) -> Element:
     return file
 
 
-def _init_graph_model(settings: dict) -> Element:
+def _init_graph_model(diagram_elements : List[Element], settings: dict) -> Element:
     """Init the graph model
 
     Args:
@@ -104,6 +105,8 @@ def _init_graph_model(settings: dict) -> Element:
     root.append(mx_cell)
     mx_cell1 = Element("mxCell", attrib={"id": "1", "parent": "0"})
     root.append(mx_cell1)
+    for element in diagram_elements:
+        root.append(element)
     mx_graph_model.append(root)
 
     return mx_graph_model
