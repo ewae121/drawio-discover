@@ -25,6 +25,12 @@ class Folder:
             or self.is_package != other.is_package
         ):
             return False
+        if not self.children:
+            return self.children == other.children
+
+        if len(self.children) != len(other.children):
+            return False
+
         for idx, child in enumerate(self.children):
             if child != other.children[idx]:
                 return False

@@ -13,7 +13,7 @@ def _read_setting_or_default(settings: dict, key: str, default_value: str):
     return default_value
 
 
-def init_drawio_file(diagram_elements : List[Element], settings: dict = None) -> Element:
+def init_drawio_file(diagram_elements: List[Element], settings: dict = None) -> Element:
     """Init a drawio file
 
     Args:
@@ -52,7 +52,7 @@ def init_drawio_file(diagram_elements : List[Element], settings: dict = None) ->
     return file
 
 
-def _init_graph_model(diagram_elements : List[Element], settings: dict) -> Element:
+def _init_graph_model(diagram_elements: List[Element], settings: dict) -> Element:
     """Init the graph model
 
     Args:
