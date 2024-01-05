@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: scan steve",
+            "name": "Python: scan drawio discover",
             "type": "python",
             "console": "integratedTerminal",
             "request": "launch",
             "program": "${workspaceRoot}/drawio_discover/__main__.py",
-            "args": ["~/dev/val.steve_v3/steve"]
+            "args": ["drawio_discover/"]
         }
     ]
 }

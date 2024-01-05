@@ -3,8 +3,8 @@
 import argparse
 
 from drawio_discover.discoverer.discoverer import discover_folders
-from drawio_discover.diagrams.drawio import (
-    init_drawio_file,
+from drawio_discover.diagrams.package import (
+    generate_package_diagram,
 )
 from drawio_discover.diagrams.utils import (
     generate_file,
@@ -22,10 +22,10 @@ def run():
     parser.add_argument("input_folder", help="code base to scan", type=str)
     args = parser.parse_args()
 
-    folder = discover_folders(args.input_folder)
+    folder = discover_folders(args.input_folder, level=2)
     print(folder)
 
-    file = init_drawio_file()
+    file = generate_package_diagram(folder)
     generate_file(file, "test.drawio")
     print(get_file_content("test.drawio"))
 
