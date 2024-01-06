@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from xml.etree.ElementTree import Element
+from uuid import uuid4
 
 from drawio_discover.models.folder import Folder
 from drawio_discover.models.drawio.package_properties import (
@@ -10,23 +11,33 @@ from drawio_discover.models.drawio.package_properties import (
     Size,
     EMPTY_PACKAGE_SIZE,
 )
+from drawio_discover.models.drawio.utils import compute_columns_and_rows_counts
 
+
+MARGIN_HORIZONTAL = 10
+MARGIN_VERTICAL = 10
 
 @dataclass
 class Package:
     """Dataclass for Drawio packages"""
 
+    parent_cell_id: str
     x: int
     y: int
 
     folder: Folder
 
     def __post_init__(self):
-        self.main_cell_id = "6e0c8c40b5770093-72"
-        self.label_cell_id = "6e0c8c40b5770093-73"
+        uuid = self._generate_id()
+        self.main_cell_id = f"{uuid}-72"
+        self.label_cell_id = f"{uuid}-73"
         self.size = self._compute_size()
 
-    def get_drawio_cells(self):
+    def _generate_id(self) -> str:
+        uuid = str(uuid4())
+        return uuid.replace("-", "")[16:]
+
+    def get_drawio_package_cells(self):
         """Get the DrawIO cells for the package"""
         tab_properties = PACKAGE_PROPERTIES.tab
         cell_package = Element(
@@ -43,7 +54,7 @@ class Package:
                     "fontFamily=Verdana;fontSize=10;align=center;"
                     "collapsible=1;container=1;"
                 ),
-                "parent": "1",
+                "parent": self.parent_cell_id,
                 "vertex": "1",
             },
         )
@@ -80,7 +91,7 @@ class Package:
                     f"spacingTop=-4;fontSize={PACKAGE_PROPERTIES.label.font_size};"
                     "fontFamily=Verdana",
                 ),
-                "parent": "1",
+                "parent": self.parent_cell_id,
                 "vertex": "1",
             },
         )
@@ -99,4 +110,9 @@ class Package:
         return cell_package, cell_package_label
 
     def _compute_size(self) -> Size:
-        return EMPTY_PACKAGE_SIZE
+        if not self.folder.children:
+            return EMPTY_PACKAGE_SIZE
+        columns_count, rows_count = compute_columns_and_rows_counts(self.folder.children)
+        width = columns_count * EMPTY_PACKAGE_SIZE.width + columns_count * MARGIN_HORIZONTAL + 2 * MARGIN_HORIZONTAL
+        height = rows_count * EMPTY_PACKAGE_SIZE.height + rows_count * MARGIN_VERTICAL + 2 * MARGIN_VERTICAL
+        return Size(width=width, height=height)
