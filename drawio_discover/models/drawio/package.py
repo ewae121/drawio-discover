@@ -31,7 +31,7 @@ class Package:
         uuid = self._generate_id()
         self.main_cell_id = f"{uuid}-72"
         self.label_cell_id = f"{uuid}-73"
-        self.size = self._compute_size()
+#        self.size = self._compute_size()
 
     def _generate_id(self) -> str:
         uuid = str(uuid4())
@@ -39,6 +39,8 @@ class Package:
 
     def get_drawio_package_cells(self):
         """Get the DrawIO cells for the package"""
+        cells = []
+
         tab_properties = PACKAGE_PROPERTIES.tab
         cell_package = Element(
             "mxCell",
@@ -107,7 +109,31 @@ class Package:
         )
         cell_package_label.append(cell_package_label_geometry)
 
-        return cell_package, cell_package_label
+        cells.append(cell_package)
+        cells.append(cell_package_label)
+
+        x_index  = 0
+        y_index = 0
+        columns_count, _ = compute_columns_and_rows_counts(self.folder.children)
+        for child in self.folder.children:
+            child_x = MARGIN_HORIZONTAL + x_index * EMPTY_PACKAGE_SIZE.width
+            child_y = PACKAGE_PROPERTIES.tab.height + MARGIN_VERTICAL + y_index * EMPTY_PACKAGE_SIZE.height
+
+            child_package = Package(
+                parent_cell_id=self.main_cell_id,
+                x=child_x,
+                y=child_y,
+                folder=child,
+            )
+            cells.extend(child_package.get_drawio_package_cells())
+
+            if x_index < columns_count:
+                x_index += 1
+            else:
+                x_index = 0
+                y_index += 1
+
+        return cells
 
     def _compute_size(self) -> Size:
         if not self.folder.children:
