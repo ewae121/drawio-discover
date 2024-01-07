@@ -31,5 +31,5 @@ def generate_package_diagram(folder: Folder) -> Element:
 
 def generate_package_element(folder: Folder) -> List[Element]:
     """Generate the package elements for the folder"""
-    package = Package(x=40, y=40, parent_cell_id="1", folder=folder)
-    return package.get_drawio_package_cells()
+    package = Package(parent_cell_id="1", folder=folder)
+    return package.get_drawio_package_cells(x=40, y=40)
