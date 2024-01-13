@@ -44,6 +44,9 @@ class Size:
     width: int
     height: int
 
+    def __add__(self, other):
+        return Size(self.width + other.width, self.height + other.height)
+
 
 DEFAULT_PACKAGE_PROPERTIES = PackageProperties()
 
